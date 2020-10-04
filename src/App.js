@@ -70,7 +70,7 @@ const App = () => {
                         emptyFields.push(fieldNum);
                     resultRow.push(0);
                 } else {
-                    if (fieldIndex != -1)
+                    if (fieldIndex !== -1)
                         emptyFields.splice(fieldIndex, 1);
                 }
             }
@@ -127,7 +127,7 @@ const App = () => {
                         emptyFields.push(fieldNum);
                     resultRow.unshift(0);
                 } else {
-                    if (fieldIndex != -1)
+                    if (fieldIndex !== -1)
                         emptyFields.splice(fieldIndex, 1);
                 }
             }
@@ -190,7 +190,7 @@ const App = () => {
                         emptyFields.push(fieldNum);
                     resultColumn.push(0);
                 } else {
-                    if (fieldIndex != -1)
+                    if (fieldIndex !== -1)
                         emptyFields.splice(fieldIndex, 1);
                 }
             }
@@ -253,7 +253,7 @@ const App = () => {
                         emptyFields.push(fieldNum);
                     resultColumn.unshift(0);
                 } else {
-                    if (fieldIndex != -1)
+                    if (fieldIndex !== -1)
                         emptyFields.splice(fieldIndex, 1);
                 }
             }
