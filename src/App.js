@@ -61,7 +61,6 @@ const App = () => {
                 }
             }
 
-            const emptyFieldsLength = emptyFields.length;
             for (let i = 0; i <= 3; i++) {
                 const fieldNum = rowIndex + '' + i;
                 const fieldIndex = emptyFields.indexOf(fieldNum);
@@ -118,7 +117,6 @@ const App = () => {
                 }
             }
 
-            const emptyFieldsLength = emptyFields.length;
             for (let i = 0; i <= 3; i++) {
                 const fieldNum = rowIndex + '' + (3 - i);
                 const fieldIndex = emptyFields.indexOf(fieldNum);
@@ -181,7 +179,6 @@ const App = () => {
                 }
             }
 
-            const emptyFieldsLength = emptyFields.length;
             for (let i = 0; i <= 3; i++) {
                 const fieldNum = i + '' + columnIndex;
                 const fieldIndex = emptyFields.indexOf(fieldNum);
@@ -244,7 +241,6 @@ const App = () => {
                 }
             }
 
-            const emptyFieldsLength = emptyFields.length;
             for (let i = 0; i <= 3; i++) {
                 const fieldNum = (3 - i) + '' + columnIndex;
                 const fieldIndex = emptyFields.indexOf(fieldNum);
