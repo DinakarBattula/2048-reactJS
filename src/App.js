@@ -291,7 +291,7 @@ const App = () => {
         if (emptyFields.length) {
             createRandomNum();
         }
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
     useEffect(() => {
         const eventsSwitchFunc = (e) => {
             switch (e.code) {
