@@ -17,12 +17,38 @@ const App = () => {
         1024: { backgroundColor: '#edc53f', color: '#f9f6f2' },
         2048: { backgroundColor: '#edd22e', color: '#f9f6f2' },
     };
-    let [matrix, setMatrix] = useState([
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0]
-    ]);
+
+
+    const getMatrix = () => {
+        let currentMatrix = [[], [], [], []];
+
+        let matrixValueInLocalStorage = localStorage.getItem('matrix');
+        if (matrixValueInLocalStorage) {
+            let matrixInLocalStorage = matrixValueInLocalStorage.split(',');
+
+            let currentRowIndex = -1;
+            let i = 0;
+            while (i < matrixInLocalStorage.length) {
+                if (i % 4 === 0) {
+                    ++currentRowIndex;
+                }
+                currentMatrix[currentRowIndex].push(+matrixInLocalStorage[i]);
+                i++;
+            }
+
+        } else {
+            currentMatrix = [
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0]
+            ];
+        }
+
+        return currentMatrix;
+    }
+
+    let [matrix, setMatrix] = useState(getMatrix);
     let dummyMatrix = [[...matrix[0]], [...matrix[1]], [...matrix[2]], [...matrix[3]]];
     const randomNums = [2, 4];
     let emptyFields = [];
@@ -31,8 +57,11 @@ const App = () => {
             if (!value) emptyFields.push(rowIndex + '' + valueIndex);
         })
     );
-
-    let [score, setScore] = useState({ score: 0, scoreAdded: 0 });
+    const scoreInLocalStorage = localStorage.getItem('score');
+    let [score, setScore] = useState({
+        score: scoreInLocalStorage ? +scoreInLocalStorage : 0,
+        scoreAdded: 0
+    });
     let [gameOver, setGameOver] = useState(false);
 
     const swipedLeft = () => {
@@ -89,7 +118,7 @@ const App = () => {
                     scoreAdded: currentScore
                 }
             });
-        } else if (!emptyFields.length) setGameOver(true);
+        } else if (!emptyFields.length) findForGameOver();
     };
     const swipedRight = () => {
         let changed = false;
@@ -145,7 +174,7 @@ const App = () => {
                     scoreAdded: currentScore
                 }
             });
-        } else if (!emptyFields.length) setGameOver(true);
+        } else if (!emptyFields.length) findForGameOver();
     };
     const swipedUp = () => {
         let changed = false;
@@ -207,7 +236,7 @@ const App = () => {
                     scoreAdded: currentScore
                 }
             });
-        } else if (!emptyFields.length) setGameOver(true);
+        } else if (!emptyFields.length) findForGameOver();
     };
     const swipedDown = () => {
         let changed = false;
@@ -269,7 +298,7 @@ const App = () => {
                     scoreAdded: currentScore
                 }
             });
-        } else if (!emptyFields.length) setGameOver(true);
+        } else if (!emptyFields.length) findForGameOver();
     };
 
     const createRandomNum = () => {
@@ -279,6 +308,54 @@ const App = () => {
         let randomColumn = randomNum[1];
         dummyMatrix[randomRow][randomColumn] = randomNums[Math.floor(Math.random() + 0.5)];
         setMatrix(dummyMatrix);
+    }
+
+    const findForGameOver = () => {
+        let pairsFound = false;
+
+        // check alternayive numbers in each row 
+        for (let rowIndex = 0; rowIndex < 4; rowIndex++) {
+            let currentRow = dummyMatrix[rowIndex];
+
+            let i = 0;
+            let j = 1;
+            while (j < 4) {
+                if (currentRow[i] === currentRow[j]) {
+                    pairsFound = true;
+                    break;
+                } else {
+                    i++;
+                    j++;
+                }
+            }
+        }
+
+        // check alternayive numbers in each column
+        if (!pairsFound) {
+            for (let columnIndex = 0; columnIndex < 4; columnIndex++) {
+                let currentColumn = [];
+                for (let rowIndex = 0; rowIndex < 4; rowIndex++) {
+                    currentColumn.push(dummyMatrix[rowIndex][columnIndex]);
+                }
+
+                let i = 0;
+                let j = 1;
+                while (j < 4) {
+                    if (currentColumn[i] === currentColumn[j]) {
+                        pairsFound = true;
+                        break;
+                    } else {
+                        i++;
+                        j++;
+                    }
+                }
+            }
+        }
+
+        if (!pairsFound) {
+            setGameOver(true);
+            localStorage.clear();
+        };
     }
 
     useEffect(() => {
@@ -357,9 +434,9 @@ const App = () => {
             yDown = null;
         };
 
-
-
         return () => {
+            localStorage.setItem('matrix', matrix);
+            localStorage.setItem('score', score.score);
             document.removeEventListener("keydown", eventsSwitchFunc);
             react2048Container.removeEventListener('touchstart', handleTouchStart, false);
             react2048Container.removeEventListener('touchmove', handleTouchMove, false);
