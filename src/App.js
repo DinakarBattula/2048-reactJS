@@ -224,20 +224,20 @@ const App = () => {
                 if (value !== 0) valuesInColumn.push(value)
             });
 
-            let i = 0;
-            let j = 1;
-            while (i < valuesInColumn.length) {
+            let i = valuesInColumn.length - 1;
+            let j = valuesInColumn.length - 2;
+            while (i >= 0) {
                 if (valuesInColumn[i] === valuesInColumn[j]) {
                     let scoreAdded = valuesInColumn[i] + valuesInColumn[j];
                     currentScore += scoreAdded;
 
-                    resultColumn.push(scoreAdded);
-                    i = j + 1;
-                    j = i + 1;
+                    resultColumn.unshift(scoreAdded);
+                    i = j - 1;
+                    j = i - 1;
                 } else {
-                    resultColumn.push(valuesInColumn[i]);
-                    i++;
-                    j++;
+                    resultColumn.unshift(valuesInColumn[i]);
+                    i--;
+                    j--;
                 }
             }
 
@@ -272,19 +272,12 @@ const App = () => {
     };
 
     const createRandomNum = () => {
-        let fieldIndex = -1;
-        while (fieldIndex === -1) {
-            let randomRow = Math.floor(Math.random() * 4);
-            let randomColumn = Math.floor(Math.random() * 4);
-            const fieldNum = randomRow + '' + randomColumn;
-            fieldIndex = emptyFields.indexOf(fieldNum);
-            if (fieldIndex >= 0) {
-                console.log(dummyMatrix, emptyFields, fieldNum);
-                // emptyFields.splice(fieldIndex, 1);
-                dummyMatrix[randomRow][randomColumn] = randomNums[Math.floor(Math.random() + 0.5)];
-                setMatrix(dummyMatrix);
-            }
-        }
+        const randomNumIndex = Math.floor(Math.random() * emptyFields.length);
+        const randomNum = emptyFields[randomNumIndex];
+        let randomRow = randomNum[0];
+        let randomColumn = randomNum[1];
+        dummyMatrix[randomRow][randomColumn] = randomNums[Math.floor(Math.random() + 0.5)];
+        setMatrix(dummyMatrix);
     }
 
     useEffect(() => {
