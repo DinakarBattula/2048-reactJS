@@ -33,6 +33,7 @@ const App = () => {
     );
 
     let [score, setScore] = useState({ score: 0, scoreAdded: 0 });
+    let [gameOver, setGameOver] = useState(false);
 
     const swipedLeft = () => {
         let changed = false;
@@ -88,7 +89,7 @@ const App = () => {
                     scoreAdded: currentScore
                 }
             });
-        }
+        } else if (!emptyFields.length) setGameOver(true);
     };
     const swipedRight = () => {
         let changed = false;
@@ -144,7 +145,7 @@ const App = () => {
                     scoreAdded: currentScore
                 }
             });
-        }
+        } else if (!emptyFields.length) setGameOver(true);
     };
     const swipedUp = () => {
         let changed = false;
@@ -206,7 +207,7 @@ const App = () => {
                     scoreAdded: currentScore
                 }
             });
-        }
+        } else if (!emptyFields.length) setGameOver(true);
     };
     const swipedDown = () => {
         let changed = false;
@@ -268,7 +269,7 @@ const App = () => {
                     scoreAdded: currentScore
                 }
             });
-        }
+        } else if (!emptyFields.length) setGameOver(true);
     };
 
     const createRandomNum = () => {
@@ -397,6 +398,9 @@ const App = () => {
                         })
                     }
                 </Row>
+                {gameOver && <div className="game-over-overlay">
+                    <h1>Game Over</h1>
+                </div>}
             </div>
         </>
     );
